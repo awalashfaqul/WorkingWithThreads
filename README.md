@@ -1,4 +1,4 @@
-# Car Race Simulation
+# Car Race Simulation: Working with Threads
 
 This project is a simple car race simulation implemented in C# using threads. The goal is to demonstrate multi-threading in action by simulating a race among multiple cars. Each car is represented by the `CarRace` class, and the race itself is orchestrated in the `Program` class.
 
