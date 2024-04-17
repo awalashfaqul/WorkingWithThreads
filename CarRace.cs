@@ -16,7 +16,7 @@ namespace WorkingWithThreads
 
 
         // Constructor to initialize the car
-        public CarRace(string name, int speed)
+        public CarRace(string name, double speed)
         {
             Name = name;
             Speed = speed;
