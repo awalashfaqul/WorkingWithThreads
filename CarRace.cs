@@ -7,68 +7,80 @@ namespace WorkingWithThreads
     public class CarRace
 	{
         // Properties of the car
-        public string Name { get; }
-        public int Distance { get; private set; }
-        public int Speed { get; private set; }
-        public bool HasProblem { get; private set; }
+        public string Name { get; set; }
+        public double Distance { get; set; }
+        public double Speed { get; set; }
+        private readonly object _lock = new object(); // Lock object for synchronization
+
+
+
 
         // Constructor to initialize the car
-        public CarRace(string name)
+        public CarRace(string name, int speed)
         {
             Name = name;
-            Distance = 0;
-            Speed = 120;
-            HasProblem = false;
+            Speed = speed;
         }
 
-        // Method to simulate the car's movement affected by problems and
-        // to generate status on finishing race as well
+        // To generate status on finishing race
         public void Drive()
         {
-            Random random = new Random();
+
+            // Start the race
+            Console.WriteLine($"{Name} starts the race!");
 
             // Loop until the car reaches the finish line
-            while (Distance < 10000)
+            while (Distance < 10)
             {
-                // Check if the car has a problem
-                if (!HasProblem)
-                {
-                    // Randomly generate an event every 30 seconds
-                    if (random.Next(1, 51) == 1) // Out of gas
-                    {
-                        Console.WriteLine($"{Name} has run out of gas and needs to refuel.");
-                        Thread.Sleep(30000); // Stop for 30 seconds
-                    }
-                    else if (random.Next(1, 51) <= 2) // Puncture
-                    {
-                        Console.WriteLine($"{Name} has a puncture and needs to change the tire.");
-                        Thread.Sleep(20000); // Stop for 20 seconds
-                    }
-                    else if (random.Next(1, 51) <= 5) // Bird on the windshield
-                    {
-                        Console.WriteLine($"{Name} has a bird on the windshield and needs to wash it.");
-                        Thread.Sleep(10000); // Stop for 10 seconds
-                    }
-                    else if (random.Next(1, 51) <= 10) // Engine failure
-                    {
-                        Console.WriteLine($"{Name} has encountered engine failure. Speed reduced by 1 km/h.");
-                        Speed -= 1;
-                    }
+                // Simulate running
+                Thread.Sleep(1000); // Simulate time passing (1 second)
 
-                    // Drive the car
-                    Distance += Speed / 3600; // Convert speed from km/h to km/s
-                    Console.WriteLine($"{Name} is at {Distance} km.");
-                    Thread.Sleep(1000); // Wait for 1 second
-                }
-                else
+                // Update distance (in km) based on speed
+                lock (_lock)
                 {
-                    // Car has a problem, cannot move
-                    Thread.Sleep(1000); // Wait for 1 second
+                    Distance += Speed / 360;
                 }
+
+                // Check for random events
+                ProblemChecker();
             }
 
             // Car has finished the race
             Console.WriteLine($"{Name} has finished the race!");
+        }
+
+
+        // Method to simulate the car's movement affected by problems and
+        private void ProblemChecker()
+        {
+            Random ranDom = new Random();
+
+            
+                if (ranDom.Next(1, 51) == 1) // Out of gas
+                {
+                    Console.WriteLine($"{Name} has run out of gas and needs to refuel.");
+                    Thread.Sleep(30000); // Stop for 30 seconds
+                }
+                else if (ranDom.Next(1, 51) <= 2) // Puncture
+                {
+                    Console.WriteLine($"{Name} has a puncture and needs to change the tire.");
+                    Thread.Sleep(20000); // Stop for 20 seconds
+                }
+                else if (ranDom.Next(1, 51) <= 5) // Bird on the windshield
+                {
+                    Console.WriteLine($"{Name} has a bird on the windshield and needs to wash it.");
+                    Thread.Sleep(10000); // Stop for 10 seconds
+                }
+                else if (ranDom.Next(1, 51) <= 10) // Engine failure
+                {
+                    Console.WriteLine($"{Name} has encountered engine failure. Speed reduced by 1 km/h.");
+                    lock (_lock)
+                    {
+                        Speed -= 1;
+                    }
+                }
+
+            
         }
     }
 }

@@ -9,9 +9,9 @@ class Program
     static void Main(string[] args)
     {
         // Creating car objects
-        CarRace car1 = new CarRace("Car 1");
-        CarRace car2 = new CarRace("Car 2");
-        CarRace car3 = new CarRace("Car 3");
+        CarRace car1 = new CarRace("Toyota", 120);
+        CarRace car2 = new CarRace("Audi", 120);
+        CarRace car3 = new CarRace("Hummer", 120);
 
         // Starting race
         Console.WriteLine("The race is starting!");
@@ -23,13 +23,19 @@ class Program
         car3Thread.Start();
 
         // User input to print status
+        Console.WriteLine("Type 's' to get current race status: ");
         while (true)
         {
             string input = Console.ReadLine();
-            if (input.ToLower() == "status")
+            if (input.ToLower() == "s")
             {
-                Console.WriteLine($"Status:\n{car1.Name}: {car1.Distance} km, Speed: {car1.Speed} km/h\n{car2.Name}: {car2.Distance} km, Speed: {car2.Speed} km/h\n{car3.Name}: {car3.Distance} km, Speed: {car3.Speed} km/h");
+                Console.WriteLine($"Status:\n{car1.Name}: {car1.Distance:F2} km, Speed: {car1.Speed} km/h\n{car2.Name}: {car2.Distance:F2} km, Speed: {car2.Speed} km/h\n{car3.Name}: {car3.Distance:F2} km, Speed: {car3.Speed} km/h");
             }
+            else
+            {
+                Console.WriteLine("Invalid command. Type 's' to get current race status:");
+            }
+
         }
 
     }
